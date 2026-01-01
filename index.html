@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Allunity Order of Restructurers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enables manual toggling
+        theme: {
+          extend: {
+            colors: {
+              void: '#050505',
+              'void-light': '#111111',
+              paper: '#f5f5f5', // Light mode bg
+              ink: '#1a1a1a',   // Light mode text
+              neon: '#a855f7', // Purple-500
+              cyan: '#06b6d4', // Cyan-500
+              crimson: '#dc2626', // Red-600
+            },
+            fontFamily: {
+              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+              serif: ['ui-serif', 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif'],
+            },
+            animation: {
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'glitch': 'glitch 1s linear infinite',
+              'fadeIn': 'fadeIn 0.5s ease-out forwards',
+            },
+            keyframes: {
+              glitch: {
+                '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
+                '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
+                '62%': { transform: 'translate(0,0) skew(5deg)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+          },
+        },
+      };
+    </script>
+    <script type="importmap">
+    {
+      "imports": {
+        "vite": "https://esm.sh/vite@^7.3.0",
+        "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3",
+        "react/": "https://esm.sh/react@^19.2.3/"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      // Simple fallback for when the app can't load
+      const root = document.getElementById('root');
+      if (root) {
+        root.innerHTML = `
+          <div class="min-h-screen bg-void text-white flex items-center justify-center">
+            <div class="text-center p-8">
+              <h1 class="text-4xl font-serif text-neon mb-4">The Allunity Order</h1>
+              <p class="text-xl mb-6">众一重构者结社</p>
+              <div class="bg-void-light p-6 rounded-lg border border-neon/30 max-w-md">
+                <h2 class="text-neon font-mono mb-4">⚠️ 需要开发环境</h2>
+                <p class="text-gray-300 mb-4">此应用需要Node.js和开发服务器才能运行。</p>
+                <div class="text-left text-sm font-mono bg-black p-4 rounded">
+                  <p class="text-cyan mb-2">安装步骤：</p>
+                  <p>1. 安装 Node.js (https://nodejs.org)</p>
+                  <p>2. 运行: <code class="bg-gray-800 px-1 rounded">npm install</code></p>
+                  <p>3. 运行: <code class="bg-gray-800 px-1 rounded">npm run dev</code></p>
+                  <p>4. 在浏览器中打开显示的URL</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    </script>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
