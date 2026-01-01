@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { db } from './services/supabaseDb';
 import { Member, Article, MemberRank, ArticleType, Comment } from './types';
 import { translations, LangCode } from './services/translations';
@@ -54,6 +56,26 @@ const HeartIcon = () => (
 const formatDate = () => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+};
+
+// 检测内容是否为 Markdown
+const isMarkdown = (content: string): boolean => {
+    if (!content) return false;
+    // 检查常见的 Markdown 语法
+    const markdownPatterns = [
+        /^#{1,6}\s/m,           // 标题
+        /\*\*.*?\*\*/,          // 粗体
+        /\*.*?\*/,              // 斜体
+        /\[.*?\]\(.*?\)/,       // 链接
+        /!\[.*?\]\(.*?\)/,      // 图片
+        /^[-*+]\s/m,            // 无序列表
+        /^\d+\.\s/m,            // 有序列表
+        /^```[\s\S]*?```/m,     // 代码块
+        /^`.*?`/m,              // 行内代码
+        /^\|.*\|/m,             // 表格
+        /^>\s/m,                // 引用
+    ];
+    return markdownPatterns.some(pattern => pattern.test(content));
 };
 
 // --- Components ---
@@ -365,8 +387,16 @@ const Archives = ({ lang, user }: { lang: LangCode, user: Member | null }) => {
             <span className="px-2 py-0.5 border border-gray-400 dark:border-gray-700 rounded text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-void-light">{reading.type}</span>
           </div>
           
-          <div className="font-serif leading-relaxed text-gray-800 dark:text-gray-300 whitespace-pre-wrap">
-            {reading.content}
+          <div className="font-serif leading-relaxed text-gray-800 dark:text-gray-300">
+            {isMarkdown(reading.content) ? (
+              <div className="markdown-content">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {reading.content}
+                </ReactMarkdown>
+              </div>
+            ) : (
+              <div className="whitespace-pre-wrap">{reading.content}</div>
+            )}
           </div>
 
           {reading.type === ArticleType.PDF && (
